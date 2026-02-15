@@ -1,0 +1,130 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8027155842218685004
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2611268125977984374}
+  - component: {fileID: 6409239654236331970}
+  - component: {fileID: 5431113010279676049}
+  - component: {fileID: 4111708557307073865}
+  m_Layer: 0
+  m_Name: Rocket
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2611268125977984374
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8027155842218685004}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2199116025895035612}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6409239654236331970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8027155842218685004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1915f3728f1e48e4b9309863d3674f31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  platformRoot: {fileID: 0}
+  platformTopPoint: {fileID: 0}
+  dist: 16.5
+  x: 0
+--- !u!114 &5431113010279676049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8027155842218685004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aadf57c80821fd4abb0e7517e411980, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4111708557307073865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8027155842218685004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5644282010dc674483e66ad20731a3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canLaunch: 0
+  initialLiftDistance: 0
+  launchAcceleration: 6
+  launchDuration: 8
+  cameraFocus: {fileID: 0}
+  rocketLock: {fileID: 5431113010279676049}
+  ErrorBox: {fileID: 0}
+  ErrorPanel: {fileID: 0}
+  ErrorPan: {fileID: 0}
+  assemblyScreen: {fileID: 0}
+  ResultScreen: {fileID: 0}
+  VideoLayer: {fileID: 0}
+  SuccessPage: {fileID: 0}
+  ErrorMessage: {fileID: 0}
+  BlackScreen: {fileID: 0}
+  clickSound: {fileID: 0}
+  clickClip: {fileID: 0}
+  LaunchClip: {fileID: 0}
+  videoPlayer: {fileID: 0}
+  video4Part: {fileID: 0}
+  video7Large: {fileID: 0}
+  video10Part: {fileID: 0}
+--- !u!1 &8250215520429564409
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2199116025895035612}
+  m_Layer: 0
+  m_Name: Menil and Animesh
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &2199116025895035612
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8250215520429564409}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2611268125977984374}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
