@@ -30,6 +30,9 @@ public class PartDrag : MonoBehaviour
     public bool locked = false;
     public bool isRootPart = false;
 
+    public static long pauseBeforeFrame = 0;
+
+
     [Header("Identity")]
     public PartRole role;
 
@@ -324,7 +327,7 @@ public class PartDrag : MonoBehaviour
         int count = assemblyParts.Count;
         if (count != 4 && count != 7 && count != 10)
         {
-            error = $"Invalid number of parts ({count}). Expected 4, 7, or 10.";
+            error = "Rocket components are not connected properly. Rocket components are connected at wrong position. Check Blue Print For help for required configuration.";
             return false;
         }
 
@@ -341,14 +344,14 @@ public class PartDrag : MonoBehaviour
         {
             if (graph[p].Count == 0)
             {
-                error = $"Unconnected part: {p.name} ({p.role})";
+                error = $"Rocket components are not connected properly. {GetRequiredPartsList(count)} are required for launch";
                 return false;
             }
         }
 
         if (graph[payload].Count != 1)
         {
-            error = $"Payload must be an endpoint (has {graph[payload].Count} connections)";
+            error = "Rocket components are connected at wrong position. Check Blue Print For help";
 
             Debug.LogError($"Payload connections:");
             foreach (var conn in graph[payload])
@@ -365,13 +368,15 @@ public class PartDrag : MonoBehaviour
         {
             if (r == PartRole.SideTank || r == PartRole.SideThruster)
             {
-                error = "Side parts cannot be in main chain";
+                error = "Rocket components are connected at wrong position. Check Blue Print For help";
                 return false;
             }
         }
 
         if (count == 4)
         {
+            PartDrag.pauseBeforeFrame = 180;
+            PartDrag.resultNumber = 1;
             resultNumber = 1;
             return Match(chain, new[]
             {
@@ -384,12 +389,16 @@ public class PartDrag : MonoBehaviour
 
         if (count == 7)
         {
+            {
+                PartDrag.pauseBeforeFrame = 610 ;
+                PartDrag.resultNumber = 2;
+            }
             if (chain.Count < 6)
             {
                 error = $"Chain too short: {chain.Count}";
                 return false;
             }
-            resultNumber = 1;
+            resultNumber = 2;
             if (!Match(chain.GetRange(0, 6), new[]
             {
                 PartRole.Payload,
@@ -413,7 +422,11 @@ public class PartDrag : MonoBehaviour
 
         if (count == 10)
         {
-            resultNumber = 2;
+            {
+                PartDrag.pauseBeforeFrame = 510;
+                PartDrag.resultNumber = 3;
+            }
+            resultNumber = 3;
             if (!Match(chain, new[]
             {
                 PartRole.Payload,
@@ -488,22 +501,39 @@ public class PartDrag : MonoBehaviour
         return graph;
     }
 
-    static bool Match(
-        List<PartRole> chain,
-        PartRole[] expected,
-        out string error)
+    static string GetRequiredPartsList(int count)
     {
+        if (count == 4)
+            return "Payload, Separator2, CoreTank, CoreThruster";
+
+        if (count == 7)
+            return "Payload, Separator2, CoreTank, CoreThruster, Separator1, LiquidTank, LargeThruster";
+
+        if (count == 10)
+            return "Full booster configuration with SideTank and SideThrusters";
+
+        return "Required parts";
+    }
+
+
+    static bool Match(
+    List<PartRole> chain,
+    PartRole[] expected,
+    out string error)
+    {
+        // ❌ Wrong number of parts in main chain → blueprint issue
         if (chain.Count != expected.Length)
         {
-            error = $"Incorrect chain length: got {chain.Count}, expected {expected.Length}";
+            error = "Rocket parts are incorrect. Check Blue Print For help";
             return false;
         }
 
+        // ❌ Wrong order / wrong parts
         for (int i = 0; i < expected.Length; i++)
         {
             if (chain[i] != expected[i])
             {
-                error = $"Expected {expected[i]} at position {i}, got {chain[i]}";
+                error = "Rocket parts are incorrect. Check Blue Print For help";
                 return false;
             }
         }
@@ -511,4 +541,5 @@ public class PartDrag : MonoBehaviour
         error = null;
         return true;
     }
+
 }

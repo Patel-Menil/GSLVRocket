@@ -27,7 +27,7 @@ public class UIPartDragSource : MonoBehaviour,
 
         Ray ray = cam.ScreenPointToRay(eventData.position);
 
-        float spawnDepth = 3f;
+        float spawnDepth = 25f;
         Vector3 mouseWorld = ray.GetPoint(spawnDepth);
 
         ghost = Instantiate(partPrefab);

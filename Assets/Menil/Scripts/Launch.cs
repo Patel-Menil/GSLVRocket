@@ -14,6 +14,15 @@ public class Launch : MonoBehaviour
     [Header("Launch Permission")]
     public bool canLaunch = true;
 
+    [Header("Idle Reset")]
+    //public GameObject SimulationScreen;
+    public float idleLimit = 30f;   // seconds
+    private float lastInputTime;
+    [Header("Result Idle Reset")]
+    public float resultIdleLimit = 40f;
+
+
+
     [Header("Lift Off")]
     public float initialLiftDistance = 0f;
     public float launchAcceleration = 6f;
@@ -35,12 +44,13 @@ public class Launch : MonoBehaviour
     [Header("UI Screens")]
     [SerializeField] private GameObject assemblyScreen;
     [SerializeField] private GameObject ResultScreen;
+    [SerializeField] private GameObject StartScreen;
     [SerializeField] private GameObject VideoLayer;
 
     [Header("Result Screen Pages")]
     [SerializeField] private GameObject SuccessPage;
     [SerializeField] private GameObject ErrorMessage;
-    [SerializeField] private GameObject BlackScreen;
+    //[SerializeField] private GameObject BlackScreen;
 
     [Header("Reset Audio")]
     public AudioSource clickSound;
@@ -60,9 +70,17 @@ public class Launch : MonoBehaviour
     public VideoClip video7Large;
     public VideoClip video10Part;
 
+    [Header("Video Pause Control")]
+    private long pauseBeforeFrame;    // <-- your X frame here
+    private bool pauseTriggered = false;
+    public ErrorDeispaly errorDisplay;
+
+
     void Start()
     {
         initialPosition = transform.position;
+        lastInputTime = Time.time;
+
         if (videoPlayer != null)
         {
             videoPlayer.playOnAwake = false;
@@ -80,6 +98,61 @@ public class Launch : MonoBehaviour
             videoPlayer.loopPointReached += OnVideoFinished;
         }
     }
+    void Update()
+    {
+        DetectUserActivity();
+
+        // ----- RESULT SCREEN IDLE -----
+        if (ResultScreen.activeSelf &&
+            Time.time - lastInputTime >= resultIdleLimit)
+        {
+            Debug.Log("⏳ Result idle timeout → StartScreen");
+            ResetGame();
+            ResultScreen.SetActive(false);
+            StartScreen.SetActive(true);
+            
+            lastInputTime = Time.time;
+        }
+
+        // ----- ASSEMBLY SCREEN IDLE -----
+        if (assemblyScreen.activeSelf &&
+            Time.time - lastInputTime >= idleLimit)
+        {
+            Debug.Log("⏳ Assembly idle timeout → ResetGame()");
+            ResetGame();
+            lastInputTime = Time.time;
+        }
+
+        // ----- VIDEO LOGIC -----
+        if (videoPlayer == null) return;
+        if (!videoPlayer.isPlaying) return;
+        if (pauseTriggered) return;
+
+        if (videoPlayer.frame >= pauseBeforeFrame)
+        {
+            videoPlayer.Pause();
+            pauseTriggered = true;
+            ShowResultAfterPause();
+        }
+    }
+
+
+
+    void DetectUserActivity()
+    {
+        // Only REAL interaction should reset idle timer
+        if (Input.anyKeyDown ||
+            Input.GetMouseButtonDown(0) ||
+            Input.touchCount > 0)
+        {
+            lastInputTime = Time.time;
+        }
+    }
+
+
+
+
+
 
     public void Abort()
     {
@@ -114,11 +187,12 @@ public class Launch : MonoBehaviour
         }
 
         Debug.Log("✅ Game reset complete");
-
+        assemblyScreen?.SetActive(false);
+        StartScreen?.SetActive(true);
         if (videoPlayer != null)
         {
             videoPlayer.Stop();
-            videoPlayer.gameObject.SetActive(false);
+            //videoPlayer.gameObject.SetActive(false);
         }
     }
 
@@ -135,6 +209,8 @@ public class Launch : MonoBehaviour
 
     public void StartLaunch()
     {
+        pauseBeforeFrame = PartDrag.pauseBeforeFrame;
+
         if (!PartDrag.ValidateAssembly(out string error))
         {
             Debug.LogError("❌ Rocket INVALID: " + error);
@@ -266,6 +342,8 @@ public class Launch : MonoBehaviour
         Debug.Log("🎬 Playing video: " + fileName);
 
         videoPlayer.Stop();
+        pauseTriggered = false;
+
         videoPlayer.Prepare();
         videoPlayer.prepareCompleted += OnVideoPrepared;
     }
@@ -279,33 +357,48 @@ public class Launch : MonoBehaviour
 
     void OnVideoFinished(VideoPlayer vp)
     {
+        if (pauseTriggered) return; // prevents duplicate result screen
+
         Debug.Log("🎬 Video finished");
 
         vp.loopPointReached -= OnVideoFinished;
 
         vp.Stop();
-
         vp.gameObject.SetActive(false);
 
         ResultScreen?.SetActive(true);
         ShowResultUI();
     }
+    
 
     void ShowResultUI()
     {
-        BlackScreen.SetActive(true);
+        //BlackScreen.SetActive(true);
         if (SuccessPage) SuccessPage.SetActive(false);
         if (ErrorMessage) ErrorMessage.SetActive(false);
 
         switch (PartDrag.resultNumber)
         {
-            case 2:
+            case 3:
                 SuccessPage?.SetActive(true);
                 break;
 
             default:
                 ErrorMessage?.SetActive(true);
+                errorDisplay?.UpdateErrorUI();
                 break;
         }
     }
+
+    void ShowResultAfterPause()
+    {
+        //if (videoPlayer != null)
+        //{
+        //    videoPlayer.gameObject.SetActive(false);
+        //}
+
+        ResultScreen?.SetActive(true);
+        ShowResultUI();
+    }
+
 }

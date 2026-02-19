@@ -982,7 +982,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &787340104
 Transform:
   m_ObjectHideFlags: 0
@@ -2163,7 +2163,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2291878751041649969, guid: e0c14da955a70614bba4b67ff709fdf1, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
-      value: successSound
+      value: PlayResetSound
       objectReference: {fileID: 0}
     - target: {fileID: 2291878751041649969, guid: e0c14da955a70614bba4b67ff709fdf1, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
@@ -3371,7 +3371,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8370280774119899241, guid: 2a31b74277122ac4eaa392fc2026e507, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3386,9 +3386,9 @@ SceneRoots:
   - {fileID: 2005891990}
   - {fileID: 1115738400}
   - {fileID: 702603306}
-  - {fileID: 5686468258741579194}
-  - {fileID: 672649164184967061}
   - {fileID: 1725652170}
   - {fileID: 5317570618323944893}
+  - {fileID: 5686468258741579194}
+  - {fileID: 672649164184967061}
   - {fileID: 746263195933706096}
   - {fileID: 1036940797925687352}
